@@ -6,6 +6,7 @@
 
 from .difyAgent import DifyAgent
 from .repeaterAgent import RepeaterAgent
+from .olaresAgent import OlaresAgent
 from .fastgptAgent import FastgptAgent
 from .openaiAgent import OpenaiAgent
 

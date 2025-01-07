@@ -1,0 +1,9 @@
+NAME: "OlaresAgent"
+VERSION: "v0.0.1"
+# 暴露给前端的参数选项以及默认值
+PARAMETERS: [
+  {
+    NAME: "OLARES_API_URL",
+    DEFAULT: ""
+  }
+]

@@ -96,7 +96,7 @@ interface AgentEngineState {
 export const useAgentModeStore = create<AgentEngineState>()(
     persist(
         (set) => ({
-            agentEngine: "RepeaterAgent",
+            agentEngine: "OlaresAgent",
             // 获取默认的agent引擎
             fetchDefaultAgent: async () => {
                 Comm.getInstance().getDefaultAgent().then((res) => {

@@ -96,6 +96,8 @@ class OlaresAgent(BaseAgent):
                 if paramter['NAME'] not in kwargs:
                     raise RuntimeError(f"Missing parameter: {paramter['NAME']}")
             API_URL = kwargs["OLARES_API_URL"]  # 使用 OLARES_API_URL
+            logger.debug(f"[AGENT] Using API_URL: {API_URL}")  # 添加 API_URL 的日志输出
+
             conversation_id = kwargs.get("conversation_id", "")
             payload = {
                 "inputs": {},
@@ -105,7 +107,7 @@ class OlaresAgent(BaseAgent):
             }
 
             # 发送请求
-            response = await httpxAsyncClient.post(API_URL + "/chat-messages", json=payload)
+            response = await httpxAsyncClient.post(API_URL, json=payload)
             data = response.json()  # 直接解析 JSON 响应
             yield data.get('answer', "没有返回答案。")  # 返回答案，如果没有则返回默认消息
 

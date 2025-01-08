@@ -35,8 +35,7 @@ class OpenAIAPI(BaseEngine):
                     API_KEY = paramter['DEFAULT'] if paramter['NAME'] not in kwargs else kwargs[paramter['NAME']]
 
             headers = {
-                'Authorization': f'Bearer {API_KEY}',
-                'Content-Type': 'application/json'
+                'Authorization': f'Bearer {API_KEY}'
             }
 
             # 添加 model 参数
@@ -45,7 +44,7 @@ class OpenAIAPI(BaseEngine):
             }
 
             files = {'file': ('userAudio', io.BytesIO(wavToMp3(input.data)), 'audio/mp3')}
-            resp = await httpxAsyncClient.post(API_URL + "/audio/transcriptions", headers=headers, files=files, json=data)
+            resp = await httpxAsyncClient.post(API_URL + "/audio/transcriptions", headers=headers, files=files, data=data)
             if resp.status_code != 200:
                 raise RuntimeError(f"status_code: {resp.status_code}")
             

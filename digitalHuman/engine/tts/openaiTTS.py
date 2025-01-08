@@ -35,21 +35,20 @@ class OpenAIAPI(BaseEngine):
             payload = {
                 "model": "tts-1",  # 使用 OpenAI 的 TTS 模型进行语音合成
                 "input": input.data,  # 传入要合成的文本
-                "voice": "alloy",  # 可以选择合适的声音类型
-                "response_format": "url"  # 返回音频的 URL
+                "voice": "alloy"  # 可以选择合适的声音类型
+                # 移除不支持的 response_format 参数
             }
 
             logger.debug(f"[TTS] Engine input: {input.data}")
             async with self.asyncLock:
-                resp = await httpxAsyncClient.post(API_URL + "/audio/speech", json=payload, headers=headers)  # 更改为正确的 API 路径
+                resp = await httpxAsyncClient.post(API_URL + "/audio/speech", json=payload, headers=headers)  # 使用 json 发送请求
             if resp.status_code != 200:
                 raise RuntimeError(f"status_code: {resp.status_code}")
             
-            audio_url = resp.json().get("url")  # 获取返回的音频 URL
-            audio_content = await httpxAsyncClient.get(audio_url)  # 下载音频内容
+            audio_content = resp.content  # 直接获取音频内容
             
             message = AudioMessage(
-                data=mp3ToWav(audio_content.content),
+                data=mp3ToWav(audio_content),  # 直接使用音频内容
                 desc=input.data,
                 format=AudioFormatType.WAV,
                 sampleRate=16000,

@@ -39,8 +39,13 @@ class OpenAIAPI(BaseEngine):
                 'Content-Type': 'application/json'
             }
 
+            # 添加 model 参数
+            data = {
+                "model": "whisper-1"
+            }
+
             files = {'file': ('userAudio', io.BytesIO(wavToMp3(input.data)), 'audio/mp3')}
-            resp = await httpxAsyncClient.post(API_URL + "/audio/transcriptions", headers=headers, files=files)
+            resp = await httpxAsyncClient.post(API_URL + "/audio/transcriptions", headers=headers, files=files, json=data)
             if resp.status_code != 200:
                 raise RuntimeError(f"status_code: {resp.status_code}")
             

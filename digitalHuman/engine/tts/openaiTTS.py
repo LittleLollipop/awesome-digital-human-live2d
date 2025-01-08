@@ -17,7 +17,7 @@ class OpenAIAPI(BaseEngine):
         super().setup()
         self.asyncLock = asyncio.Lock()
 
-    async def run(self, input: TextMessage, **kwargs) -> Optional[TextMessage]:
+    async def run(self, input: TextMessage, **kwargs) -> Optional[AudioMessage]:
         try: 
             API_URL = ""  # OpenAI TTS API URL
             API_KEY = ""
@@ -33,14 +33,15 @@ class OpenAIAPI(BaseEngine):
                 'Authorization': f'Bearer {API_KEY}'
             }
             payload = {
-                "model": "whisper-1",  # 使用 OpenAI 的 Whisper 模型进行语音合成
-                "prompt": input.data,
+                "model": "tts-1",  # 使用 OpenAI 的 TTS 模型进行语音合成
+                "input": input.data,  # 传入要合成的文本
+                "voice": "alloy",  # 可以选择合适的声音类型
                 "response_format": "url"  # 返回音频的 URL
             }
 
             logger.debug(f"[TTS] Engine input: {input.data}")
             async with self.asyncLock:
-                resp = await httpxAsyncClient.post(API_URL + "/audio/transcriptions", json=payload, headers=headers)
+                resp = await httpxAsyncClient.post(API_URL + "/audio/speech", json=payload, headers=headers)  # 更改为正确的 API 路径
             if resp.status_code != 200:
                 raise RuntimeError(f"status_code: {resp.status_code}")
             

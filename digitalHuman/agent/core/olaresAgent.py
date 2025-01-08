@@ -21,7 +21,7 @@ __all__ = ["OlaresAgent"]
 class OlaresAgent(BaseAgent):
 
     async def createConversation(self, streaming: bool, **kwargs) -> str:
-        return "" + int(time.time())
+        return str(int(time.time()))
 
     async def run(
         self, 
